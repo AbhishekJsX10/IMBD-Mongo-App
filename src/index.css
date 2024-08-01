@@ -1,0 +1,38 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+/* global.css or index.css */
+body::-webkit-scrollbar {
+  width: 10px !important;
+}
+
+body::-webkit-scrollbar-track {
+  background-color: #18181B !important;
+}
+
+body::-webkit-scrollbar-thumb {
+  border-radius: 1rem !important;
+  background-color: #757575 !important;
+}
+
+/* Ensure the styles are applied to all scrollable elements */
+*::-webkit-scrollbar {
+  width: 10px !important;
+}
+
+*::-webkit-scrollbar-track {
+  background-color: #18181B !important;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 1rem !important;
+  background-color: #757575 !important;
+}
+
+.footer-logo{
+  padding-left: 2.6rem;
+  padding-right: 2.6rem;
+}
