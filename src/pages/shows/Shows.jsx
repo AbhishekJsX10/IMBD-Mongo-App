@@ -30,7 +30,7 @@ const Shows = () => {
     setIsLoading(true);
     fetchTvSeries(activePage, sortBy)
       .then((res) => {
-        console.log(res, "res"); // Log response for debugging
+        // console.log(res, "res"); // Log response for debugging
         setShows(res?.results); // Update state with fetched TV shows
         setActivePage(res?.page); // Update current page number
         setTotalPages(res?.total_pages); // Update total pages

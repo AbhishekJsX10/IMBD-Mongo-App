@@ -3,7 +3,7 @@
 // Home Page/Landing Page of the application
 
 // imports
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   Box,
   Container,
@@ -14,10 +14,9 @@ import {
 } from "@chakra-ui/react";
 import { fetchTrending } from "../services/api";
 import CardComponent from "../components/CardComponent";
-// import Banner from "../components/Banner/Banner";
-import SpecialBanner from "../components/SpecialBanner/SpecialBanner";
 import Banner from "../components/Banner/Banner";
-
+// import SpecialBanner from "../components/SpecialBanner/SpecialBanner";
+import Context from "../context/Context"
 
 const Home = () => {
   // State variables
@@ -25,9 +24,13 @@ const Home = () => {
   const [loading, setLoading] = useState(true); // Loading state
   const [timeWindow, setTimeWindow] = useState("day"); // Time window for trending data (day or week)
 
+  const authenticationByMongoDB = useContext(Context);
+
+
   // Fetch trending data whenever timeWindow changes
   useEffect(() => {
     setLoading(true); // Set loading to true before fetching data
+    // console.log("user Signout homepage",authenticationByMongoDB.userSignOut)
     fetchTrending(timeWindow)
       .then((res) => {
         setData(res); // Set data with the fetched results
@@ -40,15 +43,15 @@ const Home = () => {
       });
   }, [timeWindow]); // Dependency on timeWindow to re-fetch data when it changes
 
-  console.log(data, "data"); // Log data for debugging
+  // console.log(data, "data"); // Log data for debugging
 
   return (
     <>
       {/* SpecialBanner component that displays a special banner with trending data */}
-      {data.length > 0 && <SpecialBanner data={data} mt={"7rem"} />}
+      {/* {data.length > 0 && <SpecialBanner data={data} mt={"7rem"} />} */}
 
       <Container maxW={"container.xl"}>
-        {/* <Banner data={data}/> */}
+        <Banner data={data}/>
         {/* Header for the recommendations section */}
         <Flex alignItems={"baseline"} gap={"4"} my={"10"} mt={"2rem"}>
           <Heading as="h2" fontSize={"md"}>

@@ -33,7 +33,7 @@ const Search = () => {
     setIsLoading(true);
     searchData(searchValue, activePage)
       .then((res) => {
-        console.log(res, "res"); // Log response for debugging
+        // console.log(res, "res"); // Log response for debugging
         setData(res?.results); // Update data with search results
         setActivePage(res?.page); // Update current page number
         setTotalPages(res?.total_pages); // Update total pages

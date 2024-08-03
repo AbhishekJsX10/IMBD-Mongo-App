@@ -35,8 +35,7 @@ const Login = () => {
         },
         withCredentials: true,
       });
-  
-      console.log(api);
+      // console.log(api);
   
       toast({
         title: "Login successful",
@@ -45,6 +44,9 @@ const Login = () => {
       });
   
       authenticationByMongoDB.setIsAuthenticated(true);
+      authenticationByMongoDB.setUserSignOut(false)
+      // console.log("user Signout login",authenticationByMongoDB.userSignOut)
+      // if(!authenticationByMongoDB.userSignOut) console.log("done false")
       setTimeout(() => { navigate("/") }, 3000);
     } catch (error) {
       console.error(error);

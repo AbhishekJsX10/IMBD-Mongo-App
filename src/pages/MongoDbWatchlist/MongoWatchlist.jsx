@@ -1,10 +1,69 @@
 
+import { Box, Flex, IconButton, Image, Tooltip, Heading, Text } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
+import { CheckIcon, StarIcon } from '@chakra-ui/icons';
 
-import React, { useEffect, useState } from 'react';
+const WatchlistCard = ({ type, item, removeFunction }) => {
+  return (
+    <Link to={`/${type}/${item.id}`}>
+      <Flex gap="4">
+        <Box position={"relative"} w={"150px"}>
+          <Image
+            src={`https://image.tmdb.org/t/p/w500/${item.poster_path}`}
+            alt={item.title}
+            height={"200px"}
+            minW={"150px"}
+            objectFit={"cover"}
+          />
+          <Tooltip label="Remove from watchlist">
+            <IconButton
+              aria-label="Remove from watchlist"
+              icon={<CheckIcon />}
+              size={"sm"}
+              colorScheme={"green"}
+              position={"absolute"}
+              zIndex={"999"}
+              top="2px"
+              left={"2px"}
+              onClick={(e) => {
+                e.preventDefault();
+                removeFunction();
+              }}
+            />
+          </Tooltip>
+        </Box>
+
+        <Box>
+          <Heading fontSize={{ base: 'xl', md: '2xl' }} noOfLines={1}>
+            {item?.title || item?.name}
+          </Heading>
+          <Heading fontSize={"sm"} color={"green.200"} mt="2">
+            {new Date(item?.release_date || item?.first_air_date).getFullYear() || 'N/A'}
+          </Heading>
+          <Flex alignItems={"center"} gap={2} mt="4">
+            <StarIcon fontSize={"small"} />
+            <Text textAlign={"center"} fontSize="small">
+              {item?.vote_average?.toFixed(1)}
+            </Text>
+          </Flex>
+          <Text mt="4" fontSize={{ base: 'xs', md: 'sm' }} noOfLines={5}>
+            {item?.overview}
+          </Text>
+        </Box>
+      </Flex>
+    </Link>
+  );
+};
+
+// export default WatchlistCard;
+
+
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useToast } from '@chakra-ui/react';
-import { Container, Flex, Grid, Heading, Spinner, Text } from '@chakra-ui/react';
+import { useToast, Container, Grid, Spinner } from '@chakra-ui/react';
+import Context from '../../context/Context';
+
 
 
 const MongoWatchlist = () => {
@@ -17,29 +76,25 @@ const MongoWatchlist = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const authenticationByMongoDB = useContext(Context);
+
   const fetchFullData = async (id) => {
-    let data = null;
     try {
       const movieResponse = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`);
       if (movieResponse.ok) {
-        data = await movieResponse.json();
+        const data = await movieResponse.json();
         return { ...data, type: 'movie' };
+      } else {
+        const tvResponse = await fetch(`https://api.themoviedb.org/3/tv/${id}?api_key=${apiKey}`);
+        if (tvResponse.ok) {
+          const tvData = await tvResponse.json();
+          return { ...tvData, type: 'tv' };
+        }
       }
     } catch (error) {
-      console.error('Error fetching movie data:', error);
+      console.error('Error fetching data:', error);
     }
 
-    try {
-      const tvResponse = await fetch(`https://api.themoviedb.org/3/tv/${id}?api_key=${apiKey}`);
-      if (tvResponse.ok) {
-        data = await tvResponse.json();
-        return { ...data, type: 'tv' };
-      }
-    } catch (error) {
-      console.error('Error fetching TV data:', error);
-    }
-
-    console.log('No movie or TV show found with this ID.');
     return null;
   };
 
@@ -68,9 +123,15 @@ const MongoWatchlist = () => {
       }
     };
 
+    fetchUser();
+  }, [navigate, toast]);
+
+  useEffect(() => {
     const fetchData = async () => {
+      const uniqueBookmarks = Array.from(new Set(bookmarksIds)); // Ensure IDs are unique
+      const fetchingShows = uniqueBookmarks.map((id) => fetchFullData(id));
+
       try {
-        const fetchingShows = bookmarksIds.map((id) => fetchFullData(id));
         const results = await Promise.all(fetchingShows);
         setBookmarksData(results.filter((item) => item !== null));
       } catch (error) {
@@ -79,15 +140,17 @@ const MongoWatchlist = () => {
       }
     };
 
-    fetchUser();
-    if (bookmarksIds.length > 0) fetchData();
-  }, [bookmarksIds, navigate, toast]);
+    if (bookmarksIds.length > 0) {
+      fetchData();
+    }
+  }, [bookmarksIds]);
 
   const handleRemoveClick = async (id) => {
     try {
       const response = await axios.delete(`https://backend-imdb.vercel.app/bookmarks/remove/${id}`, { withCredentials: true });
       if (response.data.success) {
         setBookmarksIds((prev) => prev.filter((bookmarkId) => bookmarkId !== id));
+        setBookmarksData((prev) => prev.filter((item) => item.id !== id)); // Update bookmarksData immediately
         toast({
           title: 'Deleted from Watchlist',
           description: 'The show has been deleted from your watchlist',
@@ -158,72 +221,4 @@ const MongoWatchlist = () => {
 };
 
 export default MongoWatchlist;
-
-// import React from 'react';
-import {
-  Box,
-  IconButton,
-  Image,
-  
-  Tooltip,
-} from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
-import { CheckIcon, StarIcon } from '@chakra-ui/icons';
-
-const WatchlistCard = ({ type, item, removeFunction }) => {
-  return (
-    <Link to={`/${type}/${item.id}`}>
-      <Flex gap="4">
-        <Box position={"relative"} w={"150px"}>
-          <Image
-            src={`https://image.tmdb.org/t/p/w500/${item.poster_path}`}
-            alt={item.title}
-            height={"200px"}
-            minW={"150px"}
-            objectFit={"cover"}
-          />
-          <Tooltip label="Remove from watchlist">
-            <IconButton
-              aria-label="Remove from watchlist"
-              icon={<CheckIcon />}
-              size={"sm"}
-              colorScheme={"green"}
-              position={"absolute"}
-              zIndex={"999"}
-              top="2px"
-              left={"2px"}
-              onClick={(e) => {
-                e.preventDefault();
-                removeFunction();
-              }}
-            />
-          </Tooltip>
-        </Box>
-
-        <Box>
-          <Heading fontSize={{ base: 'xl', md: '2xl' }} noOfLines={1}>
-            {item?.title || item?.name}
-          </Heading>
-          <Heading fontSize={"sm"} color={"green.200"} mt="2">
-            {new Date(item?.release_date || item?.first_air_date).getFullYear() || 'N/A'}
-          </Heading>
-          <Flex alignItems={"center"} gap={2} mt="4">
-            <StarIcon fontSize={"small"} />
-            <Text textAlign={"center"} fontSize="small">
-              {item?.vote_average?.toFixed(1)}
-            </Text>
-          </Flex>
-          <Text mt="4" fontSize={{ base: 'xs', md: 'sm' }} noOfLines={5}>
-            {item?.overview}
-          </Text>
-        </Box>
-      </Flex>
-    </Link>
-  );
-};
-
-// export default WatchlistCard;
-
-
-
 

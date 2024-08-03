@@ -7,19 +7,19 @@
 
 ## About the App:
 
-This project is a clone of IMDb, the popular movie and TV show database. It is built using React.js, Chakra UI for the frontend, and Firebase for the backend services. The application leverages the TMDB API for fetching movie and TV show data and includes features like watchlist functionality and Google authentication.
+This project is a clone of IMDb, the popular movie and TV show database. It is built using React.js, Chakra UI for the frontend, and Express-JS and MongoDb for the backend services. The application leverages the TMDB API for fetching movie and TV show data and includes features like watchlist functionality and Google authentication.
 
 ## Technologies Used:
 
 - **React:** A JavaScript library designed for creating dynamic user interfaces.
 - **Redux Toolkit:** A library for efficiently managing and centralizing application state.
 - **Chakra-UI:** A popular React component library that implements Google's Material Design guidelines, providing a rich set of customizable components.
-- **Firebase:** A comprehensive platform that enables the development of web and mobile applications without the need for server-side programming. 
+- **Express-JS and MongoDb:** Express.js is a minimal and flexible Node.js web application framework that provides a robust set of features for building web and mobile applications. MongoDB is a NoSQL database that stores data in flexible, JSON-like documents. Together, they form a powerful platform for developing server-side applications and APIs.
 
 ## Features:
 
 - **Authentication:**
- Robust and seamless user authentication with Firebase, guaranteeing data privacy and security. Sign in with Google to save your watchlist.
+ Robust and seamless user authentication with ExpressJS and MongoDb, guaranteeing data privacy and security. Sign in with email and password to save your watchlist.
 
 - **Trending Movies and TV Shows:**
   Displays trending movies and TV shows for the day or week.
@@ -66,7 +66,7 @@ npm run build
 
 ```bash
 VITE_API_KEY=your_tmdb_api_key
-VITE_FIREBASE_API_KEY=your_firebase_api_key
+
 ```
 
 ## Folder Structure
@@ -81,9 +81,7 @@ IMDB-clone/
 │   ├── assets/
 │   │   └── react.svg
 │   ├── components/
-│   │   ├── routes/
-|   |   |   ├── Protected.jsx
-│   │   ├── Banner/
+│   │   ├── Banner
 │   │   │   ├── Banner.jsx
 │   │   ├── SpecialBanner/
 │   │   │   ├── Banner.css
@@ -95,25 +93,23 @@ IMDB-clone/
 │   │   ├── Layout.jsx
 │   │   ├── Navbar.jsx
 │   │   ├── PaginationComponent.jsx
-│   │   ├── VideoComponent.jsx
-│   │   ├── WatchlistCard.jsx
 │   ├── context/
-│   │   ├── authProvider.jsx
-│   │   ├── useAuth.js
+│   │   ├── Context.jsx
+│   │   ├── State.jsx
 │   ├── pages/
-│   │   ├── movies/
+│   │   ├── login
+│   │   |   ├── Login.jsx
+│   │   ├── movies
 │   │   |   ├── Movies.jsx
-│   │   ├── search/
+│   │   ├── search
 │   │   |   ├── Search.jsx
-│   │   ├── shows/
+│   │   ├── shows
 │   │   |   ├── Shows.jsx
-│   │   ├── DetailsPage.jsx
+│   │   ├── DetailsPage2.jsx
 │   │   ├── Home.jsx
 │   │   ├── Watchlist.jsx
 │   ├── services/
 │   |   ├── api.js
-│   |   ├── firebase.js
-│   |   ├── firestore.js
 │   ├── utils/
 │   │   ├── helpers.js
 │   ├── App.jsx
@@ -138,7 +134,7 @@ IMDB was created to offer a seamless tvshow and movie checking experience by uti
 
 1. **Planning and Design:** Prior to coding, a meticulous plan and design phase established the app's structure, features, and user interface. This included developing wireframes and mockups to visualize the final product.
 
-2. **Setting up the Environment:** The development environment was set up with essential tools and libraries, including React, TMDB Api, Chakra UI, and Firebase, chosen as the foundational technologies for the app's construction. 
+2. **Setting up the Environment:** The development environment was set up with essential tools and libraries, including React, TMDB Api, Chakra UI, and express-js & MongoDb, chosen as the foundational technologies for the app's construction. 
 
 3. **Feature Implementation:** Key functionalities, including authentication, wishlist management, movie/tvshow showcasing, category-based filtering, and trending and recommended section, were implemented with a focus on enhancing user experience and functionality.
 
@@ -152,15 +148,15 @@ IMDB was created to offer a seamless tvshow and movie checking experience by uti
 
 #### Authentication and Security
 
-**Challenge:**  Ensuring secure user authentication and data privacy using Firebase.
+**Challenge:**  Ensuring secure user authentication and data privacy using MongoDb and ExpressJs.
 
-**Solution:** Leveraged Firebase Authentication to establish secure user authentication through google pop-up, prioritizing data protection and privacy. Implemented stringent security rules to control access to sensitive data and mitigate unauthorized actions.
+**Solution:** Authentication Routes were developed and JWT token was establish to secure user authentication, prioritizing data protection and privacy. Implemented stringent security rules to control access to sensitive data and mitigate unauthorized actions.
 
 #### Wishlist Management
 
 **Challenge:** Creating an efficient Wishlist management system with seamless add, remove, and uniquness made available for every user.
 
-**Solution:** Developed a robust wishlist management system using Firebase database and connecting it with firebase authentication, enabling smooth operations for adding, removing, and updating movies/TV shows in the Wishlist Page.
+**Solution:** Developed a robust wishlist management system using by passing and saving Id of bookmarked item to backend and extract it on the watchlist page.
 
 #### Responsive UI
 
@@ -178,7 +174,7 @@ IMDB was created to offer a seamless tvshow and movie checking experience by uti
 4. Choose "Import Git Repository" and connect your GitHub account if required.
 5. Select the forked repository (IMDB-clone) from your GitHub repositories.
 6. Configure project settings according to your requirements.
-7. Set up environment variables, including your Firebase credentials, in the Vercel dashboard.
+7. Set up environment variables, including your expressJs and mongodb setup and connections, in the Vercel dashboard.
 8. Finally, click on "Deploy" and monitor the deployment process until it finishes successfully.
 
 #### Access the Deployed Application:
