@@ -3,7 +3,7 @@
 
 ## Links:
 
-- **Deployment URL:** https://imdb-redesigned.vercel.app/
+- **Deployment URL:** https://imbd-mongo-app.vercel.app/
 
 ## About the App:
 
@@ -38,7 +38,7 @@ This project is a clone of IMDb, the popular movie and TV show database. It is b
 
 ## How to Run:
 
-### **Clone the repository:**https://github.com/AbhishekJsX10/IMDB-Redesigned.git
+### **Clone the repository:**https://github.com/AbhishekJsX10/IMBD-Mongo-App.git
 
 ```bash
 git clone 
@@ -168,7 +168,7 @@ IMDB was created to offer a seamless tvshow and movie checking experience by uti
 
 #### Deployment Steps
 
-1. **Fork the Repository:** https://github.com/AbhishekJsX10/IMDB-Redesigned.git to your local machine.
+1. **Fork the Repository:** https://github.com/AbhishekJsX10/IMBD-Mongo-App.git to your local machine.
 2. Sign up for a Vercel account if you haven't already done so.
 3. After logging in, navigate to the Vercel dashboard and click on "New Project."
 4. Choose "Import Git Repository" and connect your GitHub account if required.
