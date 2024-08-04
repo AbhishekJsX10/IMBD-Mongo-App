@@ -35,10 +35,10 @@ const SignUp = () => {
         isClosable: true,
       });
 
-      authenticationByMongoDB.setIsAuthenticated(true);
-      authenticationByMongoDB.setUserSignOut(false)
+      // authenticationByMongoDB.setIsAuthenticated(true);
+      // authenticationByMongoDB.setUserSignOut(false)
       // console.log("user Signout register",authenticationByMongoDB.userSignOut)
-      setTimeout(() => { navigate("/"); }, 3000);
+      setTimeout(() => { navigate("/login"); }, 3000);
 
     } catch (error) {
       console.error(error);
